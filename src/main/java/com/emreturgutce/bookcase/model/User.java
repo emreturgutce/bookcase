@@ -10,13 +10,13 @@ public class User {
     private final Long created_at;
     private final Long updated_at;
 
-    public User(String id, String name, String email, String password) {
+    public User(String id, String name, String email, String password, long created_at, long updated_at) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.created_at = (new Timestamp(System.currentTimeMillis())).getTime();
-        this.updated_at = (new Timestamp(System.currentTimeMillis())).getTime();
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public String getId() {
