@@ -7,10 +7,10 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private final Long created_at;
-    private final Long updated_at;
+    private final String created_at;
+    private final String updated_at;
 
-    public User(String id, String name, String email, String password, long created_at, long updated_at) {
+    public User(String id, String name, String email, String password, String created_at, String updated_at) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -51,11 +51,11 @@ public class User {
         this.password = password;
     }
 
-    public Long getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public Long getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 }
