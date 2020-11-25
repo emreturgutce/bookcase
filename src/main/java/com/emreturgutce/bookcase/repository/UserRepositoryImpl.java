@@ -1,7 +1,6 @@
 package com.emreturgutce.bookcase.repository;
 
 import com.emreturgutce.bookcase.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -10,15 +9,21 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
     private static final String CREATE_USER = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
     private static final String FIND_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
+    private static final String FIND_ALL_USERS = "SELECT * FROM users";
 
-    @Autowired
+    final
     JdbcTemplate jdbcTemplate;
+
+    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public UUID create(String name, String email, String password) throws Exception {
@@ -44,6 +49,12 @@ public class UserRepositoryImpl implements UserRepository {
     public User findById(UUID id) {
         return jdbcTemplate.queryForObject(FIND_USER_BY_ID, new Object[]{ id }, userRowMapper);
     }
+
+    @Override
+    public List<User> findAll() throws Exception {
+        return jdbcTemplate.query(FIND_ALL_USERS, userRowMapper);
+    }
+
 
     private final RowMapper<User> userRowMapper = ((rs, rowNum) -> new User(rs.getString("id"),
             rs.getString("name"),
