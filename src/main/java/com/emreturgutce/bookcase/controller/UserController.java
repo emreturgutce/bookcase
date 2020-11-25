@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -19,17 +20,17 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity createUser(@RequestBody Map<String, Object> userMap) {
+    public ResponseEntity<Map<String, String>> createUser(@RequestBody Map<String, Object> userMap) throws Exception {
         String name = (String) userMap.get("name");
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
 
-        try {
-            User user = userService.create(name, email, password);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        User user = userService.create(name, email, password);
 
-        return new ResponseEntity("User created", HttpStatus.OK);
+        Map<String, String> map = new HashMap<>();
+
+        map.put("name", user.getName());
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
