@@ -1,7 +1,5 @@
 package com.emreturgutce.bookcase.model;
 
-import java.sql.Timestamp;
-
 public class User {
     private String id;
     private String name;
