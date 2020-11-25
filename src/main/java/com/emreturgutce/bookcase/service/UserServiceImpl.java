@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -14,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(String name, String email, String password) throws Exception {
-        String userId = userRepository.create(name, email, password);
+        UUID userId = userRepository.create(name, email, password);
 
         return userRepository.findById(userId);
     }
