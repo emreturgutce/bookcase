@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.UUID;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -20,7 +21,7 @@ public class UserRepositoryImpl implements UserRepository {
     JdbcTemplate jdbcTemplate;
 
     @Override
-    public String create(String name, String email, String password) throws Exception {
+    public UUID create(String name, String email, String password) throws Exception {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
@@ -33,23 +34,21 @@ public class UserRepositoryImpl implements UserRepository {
                 return ps;
             }, keyHolder);
 
-            return (String) keyHolder.getKeys().get("id");
+            return (UUID) keyHolder.getKeys().get("id");
         } catch (Exception e) {
             throw new Exception();
         }
     }
 
     @Override
-    public User findById(String id) {
+    public User findById(UUID id) {
         return jdbcTemplate.queryForObject(FIND_USER_BY_ID, new Object[]{ id }, userRowMapper);
     }
 
-    private RowMapper<User> userRowMapper = ((rs, rowNum) -> {
-       return new User(rs.getString("id"),
-               rs.getString("name"),
-               rs.getString("email"),
-               rs.getString("password"),
-               rs.getLong("created_at"),
-               rs.getLong("updated_at"));
-    });
+    private final RowMapper<User> userRowMapper = ((rs, rowNum) -> new User(rs.getString("id"),
+            rs.getString("name"),
+            rs.getString("email"),
+            rs.getString("password"),
+            rs.getString("created_at"),
+            rs.getString("updated_at")));
 }
