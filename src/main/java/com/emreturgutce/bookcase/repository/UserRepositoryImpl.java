@@ -1,6 +1,7 @@
 package com.emreturgutce.bookcase.repository;
 
 import com.emreturgutce.bookcase.model.User;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -27,6 +28,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public UUID create(String name, String email, String password) throws Exception {
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(10));
+
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
@@ -34,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
 
                 ps.setString(1, name);
                 ps.setString(2, email);
-                ps.setString(3, password);
+                ps.setString(3, hashedPassword);
 
                 return ps;
             }, keyHolder);
