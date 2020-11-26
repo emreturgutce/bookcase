@@ -2,6 +2,7 @@ package com.emreturgutce.bookcase.service;
 
 import com.emreturgutce.bookcase.model.User;
 import com.emreturgutce.bookcase.repository.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,17 @@ public class UserServiceImpl implements UserService {
         UUID userId = userRepository.create(name, email, password);
 
         return userRepository.findById(userId);
+    }
+
+    @Override
+    public Boolean login(String email, String password) throws Exception {
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            return false;
+        }
+
+        return BCrypt.checkpw(password, user.getPassword());
     }
 
     @Override
