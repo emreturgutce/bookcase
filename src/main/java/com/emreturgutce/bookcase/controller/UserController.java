@@ -45,4 +45,12 @@ public class UserController {
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    @PostMapping("/login")
+    public Boolean login(@RequestBody Map<String, Object> userMap) throws Exception {
+        String email = (String) userMap.get("email");
+        String password = (String) userMap.get("password");
+
+        return userService.login(email, password);
+    }
 }
