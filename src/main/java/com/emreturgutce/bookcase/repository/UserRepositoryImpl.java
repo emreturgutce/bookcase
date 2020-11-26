@@ -18,6 +18,7 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String CREATE_USER = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
     private static final String FIND_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
     private static final String FIND_ALL_USERS = "SELECT * FROM users";
+    private static final String FIND_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
 
     final
     JdbcTemplate jdbcTemplate;
@@ -51,6 +52,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User findById(UUID id) {
         return jdbcTemplate.queryForObject(FIND_USER_BY_ID, new Object[]{ id }, userRowMapper);
+    }
+
+    @Override
+    public User findByEmail(String email) throws Exception {
+        return jdbcTemplate.queryForObject(FIND_USER_BY_EMAIL, new Object[] { email }, userRowMapper);
     }
 
     @Override

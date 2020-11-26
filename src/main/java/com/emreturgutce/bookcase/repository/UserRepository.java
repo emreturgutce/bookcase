@@ -10,5 +10,7 @@ public interface UserRepository {
 
     User findById(UUID id) throws Exception;
 
+    User findByEmail(String email) throws Exception;
+
     List<User> findAll() throws Exception;
 }
