@@ -28,39 +28,35 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UUID create(String name, String email, String password) throws Exception {
+    public UUID create(String name, String email, String password){
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(10));
 
-        try {
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbcTemplate.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement(CREATE_USER, Statement.RETURN_GENERATED_KEYS);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(CREATE_USER, Statement.RETURN_GENERATED_KEYS);
 
-                ps.setString(1, name);
-                ps.setString(2, email);
-                ps.setString(3, hashedPassword);
+            ps.setString(1, name);
+            ps.setString(2, email);
+            ps.setString(3, hashedPassword);
 
-                return ps;
-            }, keyHolder);
+            return ps;
+        }, keyHolder);
 
-            return (UUID) keyHolder.getKeys().get("id");
-        } catch (Exception e) {
-            throw new Exception();
-        }
+        return (UUID) keyHolder.getKeys().get("id");
     }
 
     @Override
-    public User findById(UUID id) {
+    public User findById(UUID id)  {
         return jdbcTemplate.queryForObject(FIND_USER_BY_ID, new Object[]{ id }, userRowMapper);
     }
 
     @Override
-    public User findByEmail(String email) throws Exception {
+    public User findByEmail(String email){
         return jdbcTemplate.queryForObject(FIND_USER_BY_EMAIL, new Object[] { email }, userRowMapper);
     }
 
     @Override
-    public List<User> findAll() throws Exception {
+    public List<User> findAll() {
         return jdbcTemplate.query(FIND_ALL_USERS, userRowMapper);
     }
 

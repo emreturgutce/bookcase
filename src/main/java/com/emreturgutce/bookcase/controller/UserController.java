@@ -21,22 +21,32 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> createUser(@RequestBody Map<String, Object> userMap) throws Exception {
+    public ResponseEntity<Map<String, String>> createUser(@RequestBody Map<String, Object> userMap) {
         String name = (String) userMap.get("name");
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
 
         User user = userService.signup(name, email, password);
 
-        Map<String, String> map = new HashMap<>();
-
-        map.put("name", user.getName());
+        Map<String, String> map = createUserResponse(user);
 
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, Object> userMap) {
+        String email = (String) userMap.get("email");
+        String password = (String) userMap.get("password");
+
+        User user = userService.login(email, password);
+
+        Map<String, String> map = createUserResponse(user);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
     @GetMapping("")
-    public ResponseEntity<Map<String, List<User>>> findAllUsers() throws Exception {
+    public ResponseEntity<Map<String, List<User>>> findAllUsers()  {
         List<User> users = userService.findAll();
 
         Map<String, List<User>> map = new HashMap<>();
@@ -46,11 +56,15 @@ public class UserController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @PostMapping("/login")
-    public Boolean login(@RequestBody Map<String, Object> userMap) throws Exception {
-        String email = (String) userMap.get("email");
-        String password = (String) userMap.get("password");
+    private Map<String, String> createUserResponse(User user) {
+        Map<String, String> map = new HashMap<>();
 
-        return userService.login(email, password);
+        map.put("id", user.getId());
+        map.put("name", user.getName());
+        map.put("email", user.getEmail());
+        map.put("created_at", user.getCreated_at());
+        map.put("updated_at", user.getUpdated_at());
+
+        return map;
     }
 }

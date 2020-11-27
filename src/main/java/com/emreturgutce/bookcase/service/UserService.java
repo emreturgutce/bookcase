@@ -1,13 +1,15 @@
 package com.emreturgutce.bookcase.service;
 
+import com.emreturgutce.bookcase.exception.BadRequestException;
+import com.emreturgutce.bookcase.exception.UnauthorizedException;
 import com.emreturgutce.bookcase.model.User;
 
 import java.util.List;
 
 public interface UserService {
-    User signup(String name, String email, String password) throws Exception;
+    User signup(String name, String email, String password) throws BadRequestException;
 
-    Boolean login(String email, String password) throws Exception;
+    User login(String email, String password) throws UnauthorizedException;
 
-    List<User> findAll() throws Exception;
+    List<User> findAll();
 }
