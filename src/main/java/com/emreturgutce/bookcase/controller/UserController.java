@@ -57,7 +57,7 @@ public class UserController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @GetMapping("")
+    @GetMapping("/all")
     public ResponseEntity<Map<String, List<User>>> findAllUsers()  {
         List<User> users = userService.findAll();
 
