@@ -5,7 +5,7 @@ import com.emreturgutce.bookcase.model.User;
 import java.util.List;
 
 public interface UserService {
-    User create(String name, String email, String password) throws Exception;
+    User signup(String name, String email, String password) throws Exception;
 
     Boolean login(String email, String password) throws Exception;
 

@@ -20,13 +20,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("")
+    @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> createUser(@RequestBody Map<String, Object> userMap) throws Exception {
         String name = (String) userMap.get("name");
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
 
-        User user = userService.create(name, email, password);
+        User user = userService.signup(name, email, password);
 
         Map<String, String> map = new HashMap<>();
 

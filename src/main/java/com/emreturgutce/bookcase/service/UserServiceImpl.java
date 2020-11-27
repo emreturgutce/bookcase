@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(String name, String email, String password) throws Exception {
+    public User signup(String name, String email, String password) throws Exception {
         UUID userId = userRepository.create(name, email, password);
 
         return userRepository.findById(userId);
