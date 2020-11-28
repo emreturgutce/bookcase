@@ -1,7 +1,5 @@
 package com.emreturgutce.bookcase.repository;
 
-import com.emreturgutce.bookcase.exception.BadRequestException;
-import com.emreturgutce.bookcase.exception.NotFoundException;
 import com.emreturgutce.bookcase.model.User;
 
 import java.util.List;
