@@ -13,4 +13,6 @@ public interface BookRepository {
     List<Book> findAll();
 
     void update(UUID id, String name, UUID author_id);
+
+    void delete(UUID id);
 }
