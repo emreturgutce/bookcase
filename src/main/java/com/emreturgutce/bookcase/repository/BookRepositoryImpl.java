@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.security.Key;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Types;
@@ -18,6 +19,7 @@ public class BookRepositoryImpl implements BookRepository {
     private static final String CREATE_BOOK = "INSERT INTO books (name, author_id) VALUES (?, ?)";
     private static final String FIND_BOOK_BY_ID = "SELECT * FROM books WHERE id = ?";
     private static final String FIND_ALL_BOOKS = "SELECT * FROM books";
+    private static final String UPDATE_BOOK = "UPDATE books SET name = ?, author_id = ? WHERE id = ?";
 
     final JdbcTemplate jdbcTemplate;
 
@@ -47,6 +49,11 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> findAll() {
         return jdbcTemplate.query(FIND_ALL_BOOKS, bookRowMapper);
+    }
+
+    @Override
+    public void update(UUID id, String name, UUID author_id) {
+        jdbcTemplate.update(UPDATE_BOOK, name, author_id, id);
     }
 
     private final RowMapper<Book> bookRowMapper = ((rs, rowNum) -> new Book(rs.getString("id"),
