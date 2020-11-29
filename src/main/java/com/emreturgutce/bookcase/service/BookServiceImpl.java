@@ -5,6 +5,7 @@ import com.emreturgutce.bookcase.repository.BookRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -19,5 +20,10 @@ public class BookServiceImpl implements BookService {
         UUID bookId = bookRepository.create(name, author_id);
 
         return bookRepository.findById(bookId);
+    }
+
+    @Override
+    public List<Book> findAll() {
+        return bookRepository.findAll();
     }
 }
