@@ -23,6 +23,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Book findById(UUID id) {
+        return bookRepository.findById(id);
+    }
+
+    @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
