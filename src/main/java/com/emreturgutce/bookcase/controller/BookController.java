@@ -59,4 +59,11 @@ public class BookController {
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    @PutMapping("/{bookId}")
+    public ResponseEntity<HttpStatus> updateBook(@PathVariable("bookId") UUID bookId, @RequestBody Book book) {
+        bookService.update(bookId, book);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
