@@ -1,5 +1,6 @@
 package com.emreturgutce.bookcase.service;
 
+import com.emreturgutce.bookcase.exception.BadRequestException;
 import com.emreturgutce.bookcase.model.Book;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface BookService {
     Book findById(UUID id);
 
     List<Book> findAll();
+
+    void update(UUID id, Book book) throws BadRequestException;
 }
