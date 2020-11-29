@@ -20,6 +20,7 @@ public class BookRepositoryImpl implements BookRepository {
     private static final String FIND_BOOK_BY_ID = "SELECT * FROM books WHERE id = ?";
     private static final String FIND_ALL_BOOKS = "SELECT * FROM books";
     private static final String UPDATE_BOOK = "UPDATE books SET name = ?, author_id = ? WHERE id = ?";
+    private static final String DELETE_BOOK = "DELETE FROM books WHERE id = ?";
 
     final JdbcTemplate jdbcTemplate;
 
@@ -54,6 +55,11 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public void update(UUID id, String name, UUID author_id) {
         jdbcTemplate.update(UPDATE_BOOK, name, author_id, id);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        jdbcTemplate.update(DELETE_BOOK, id);
     }
 
     private final RowMapper<Book> bookRowMapper = ((rs, rowNum) -> new Book(rs.getString("id"),
