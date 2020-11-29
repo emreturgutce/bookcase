@@ -41,4 +41,13 @@ public class BookServiceImpl implements BookService {
             throw new BadRequestException("invalid request");
         }
     }
+
+    @Override
+    public void delete(UUID id) {
+        try {
+            bookRepository.delete(id);
+        } catch (Exception e) {
+            throw new BadRequestException("invalid request");
+        }
+    }
 }
