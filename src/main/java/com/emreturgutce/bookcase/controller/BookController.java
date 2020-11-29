@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/books")
@@ -44,6 +45,17 @@ public class BookController {
         Map<String, List<Book>> map = new HashMap<>();
 
         map.put("books", books);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @GetMapping("/{bookId}")
+    public ResponseEntity<Map<String, Book>> findBookById(@PathVariable("bookId") UUID bookId) {
+        Book book = bookService.findById(bookId);
+
+        Map<String, Book> map = new HashMap<>();
+
+        map.put("book", book);
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
