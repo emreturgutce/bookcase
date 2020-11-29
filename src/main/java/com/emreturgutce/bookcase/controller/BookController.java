@@ -1,16 +1,13 @@
 package com.emreturgutce.bookcase.controller;
 
 import com.emreturgutce.bookcase.model.Book;
-import com.emreturgutce.bookcase.model.User;
 import com.emreturgutce.bookcase.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -38,5 +35,16 @@ public class BookController {
         map.put("updated_at", book.getUpdated_at());
 
         return new ResponseEntity<>(map, HttpStatus.CREATED);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Map<String, List<Book>>> findAllBooks()  {
+        List<Book> books = bookService.findAll();
+
+        Map<String, List<Book>> map = new HashMap<>();
+
+        map.put("books", books);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
