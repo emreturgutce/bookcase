@@ -10,12 +10,14 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public class BookRepositoryImpl implements BookRepository {
     private static final String CREATE_BOOK = "INSERT INTO books (name, author_id) VALUES (?, ?)";
     private static final String FIND_BOOK_BY_ID = "SELECT * FROM books WHERE id = ?";
+    private static final String FIND_ALL_BOOKS = "SELECT * FROM books";
 
     final JdbcTemplate jdbcTemplate;
 
@@ -40,6 +42,11 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book findById(UUID id) {
         return jdbcTemplate.queryForObject(FIND_BOOK_BY_ID, new Object[] { id }, bookRowMapper);
+    }
+
+    @Override
+    public List<Book> findAll() {
+        return jdbcTemplate.query(FIND_ALL_BOOKS, bookRowMapper);
     }
 
     private final RowMapper<Book> bookRowMapper = ((rs, rowNum) -> new Book(rs.getString("id"),
