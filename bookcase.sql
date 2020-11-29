@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS books (
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-ALTER TABLE books ADD CONSTRAINT books_users_fk FOREIGN KEY (author_id) REFERENCES users(id);
+ALTER TABLE books ADD CONSTRAINT books_users_fk FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE;
 
 CREATE TABLE IF NOT EXISTS users_books (
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -41,5 +41,5 @@ CREATE TABLE IF NOT EXISTS users_books (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-ALTER TABLE users_books ADD CONSTRAINT users_books_users_fk FOREIGN KEY (user_id) REFERENCES users(id);
-ALTER TABLE users_books ADD CONSTRAINT users_books_books_fk FOREIGN KEY (book_id) REFERENCES books(id);
+ALTER TABLE users_books ADD CONSTRAINT users_books_users_fk FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+ALTER TABLE users_books ADD CONSTRAINT users_books_books_fk FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE;
