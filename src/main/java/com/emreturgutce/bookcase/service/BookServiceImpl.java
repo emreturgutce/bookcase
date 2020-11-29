@@ -1,5 +1,6 @@
 package com.emreturgutce.bookcase.service;
 
+import com.emreturgutce.bookcase.exception.BadRequestException;
 import com.emreturgutce.bookcase.model.Book;
 import com.emreturgutce.bookcase.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public void update(UUID id, Book book) throws BadRequestException {
+        try {
+            bookRepository.update(id, book.getName(), UUID.fromString(book.getAuthor_id()));
+        } catch (Exception e) {
+            throw new BadRequestException("invalid request");
+        }
     }
 }
