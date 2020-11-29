@@ -11,4 +11,6 @@ public interface BookRepository {
     Book findById(UUID id);
 
     List<Book> findAll();
+
+    void update(UUID id, String name, UUID author_id);
 }
