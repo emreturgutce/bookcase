@@ -7,9 +7,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.UUID;
-
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -23,15 +20,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public User signup(String name, String email, String password) throws BadRequestException {
         try {
-            UUID userId = userRepository.create(name, email, password);
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
 
-            return userRepository.findById(userId);
+            User user = new User();
+            user.setName(name);
+            user.setEmail(email);
+            user.setPassword(hashedPassword);
+
+            userRepository.save(user);
+
+            return user;
         } catch (Exception e) {
             throw new BadRequestException("invalid credentials");
         }
     }
 
-    @Override
+     @Override
     public User login(String email, String password) throws BadRequestException {
         try {
             User user = userRepository.findByEmail(email);
@@ -46,10 +50,5 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new BadRequestException("Invalid credentials");
         }
-    }
-
-    @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
     }
 }
