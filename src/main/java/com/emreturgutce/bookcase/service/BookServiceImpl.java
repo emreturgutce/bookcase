@@ -18,10 +18,14 @@ public class BookServiceImpl implements BookService {
     public BookServiceImpl(BookRepository bookRepository) { this.bookRepository = bookRepository; }
 
     @Override
-    public Book create(String name, String author_id) {
-        UUID bookId = bookRepository.create(name, author_id);
+    public Book create(String name, String author_id) throws BadRequestException{
+        try {
+            UUID bookId = bookRepository.create(name, author_id);
 
-        return bookRepository.findById(bookId);
+            return bookRepository.findById(bookId);
+        } catch (Exception e) {
+            throw new BadRequestException("Invalid request");
+        }
     }
 
     @Override
@@ -49,11 +53,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(UUID id) throws NotFoundException {
         try {
             bookRepository.delete(id);
         } catch (Exception e) {
-            throw new BadRequestException("invalid request");
+            throw new NotFoundException("Book not found");
         }
     }
 }

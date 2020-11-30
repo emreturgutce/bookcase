@@ -1,7 +1,6 @@
 package com.emreturgutce.bookcase.service;
 
 import com.emreturgutce.bookcase.exception.BadRequestException;
-import com.emreturgutce.bookcase.exception.UnauthorizedException;
 import com.emreturgutce.bookcase.model.User;
 import com.emreturgutce.bookcase.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -23,13 +22,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User signup(String name, String email, String password) throws BadRequestException {
-        UUID userId = userRepository.create(name, email, password);
+        try {
+            UUID userId = userRepository.create(name, email, password);
 
-        return userRepository.findById(userId);
+            return userRepository.findById(userId);
+        } catch (Exception e) {
+            throw new BadRequestException("invalid credentials");
+        }
     }
 
     @Override
-    public User login(String email, String password) throws UnauthorizedException {
+    public User login(String email, String password) throws BadRequestException {
         try {
             User user = userRepository.findByEmail(email);
 
@@ -41,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
             return user;
         } catch (Exception e) {
-            throw new UnauthorizedException("Invalid credentials");
+            throw new BadRequestException("Invalid credentials");
         }
     }
 
