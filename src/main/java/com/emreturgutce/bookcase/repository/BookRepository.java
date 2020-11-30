@@ -1,18 +1,8 @@
 package com.emreturgutce.bookcase.repository;
 
 import com.emreturgutce.bookcase.model.Book;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.UUID;
 
-public interface BookRepository {
-    UUID create(String name, String author_id);
-
-    Book findById(UUID id);
-
-    List<Book> findAll();
-
-    void update(UUID id, String name, UUID author_id);
-
-    void delete(UUID id);
-}
+public interface BookRepository extends JpaRepository<Book, UUID> {}

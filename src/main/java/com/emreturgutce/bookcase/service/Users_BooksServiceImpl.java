@@ -1,7 +1,6 @@
 package com.emreturgutce.bookcase.service;
 
 import com.emreturgutce.bookcase.exception.BadRequestException;
-import com.emreturgutce.bookcase.repository.Users_BooksRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
