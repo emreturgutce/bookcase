@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,11 +31,13 @@ public class UserController {
 
         User user = userService.signup(name, email, password);
 
+        Map<String, String> map = new HashMap<>();
+
         String token = generateJwtToken(user);
 
-        Map<String, String> map = createUserResponse(user);
-
         map.put("token", token);
+
+        map.put("name", user.getName());
 
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
@@ -50,40 +51,20 @@ public class UserController {
 
         String token = generateJwtToken(user);
 
-        Map<String, String> map = createUserResponse(user);
+        Map<String, String> map = new HashMap<>();
 
         map.put("token", token);
 
-        return new ResponseEntity<>(map, HttpStatus.OK);
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<Map<String, List<User>>> findAllUsers()  {
-        List<User> users = userService.findAll();
-
-        Map<String, List<User>> map = new HashMap<>();
-
-        map.put("users", users);
-
-        return new ResponseEntity<>(map, HttpStatus.OK);
-    }
-
-    private Map<String, String> createUserResponse(User user) {
-        Map<String, String> map = new HashMap<>();
-
-        map.put("id", user.getId());
         map.put("name", user.getName());
-        map.put("email", user.getEmail());
-        map.put("created_at", user.getCreated_at());
-        map.put("updated_at", user.getUpdated_at());
 
-        return map;
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     private String generateJwtToken(User user) {
         long timestamp = System.currentTimeMillis();
 
-        return Jwts.builder().signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
+        return Jwts.builder()
+                .signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
                 .setIssuedAt(new Date(timestamp))
                 .setExpiration(new Date(timestamp + Constants.TOKEN_EXPIRATION_TIME))
                 .claim("id", user.getId())
