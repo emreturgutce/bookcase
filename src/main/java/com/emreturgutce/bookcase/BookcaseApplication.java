@@ -21,7 +21,7 @@ public class BookcaseApplication {
 
 		registrationBean.setFilter(authFilter);
 
-		registrationBean.addUrlPatterns("/api/users/all");
+		registrationBean.addUrlPatterns("/api/books/*");
 
 		return registrationBean;
 	}
