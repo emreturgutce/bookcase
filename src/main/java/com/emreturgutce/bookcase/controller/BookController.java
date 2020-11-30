@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,14 @@ public class BookController {
     @DeleteMapping("/{bookId}")
     public ResponseEntity<HttpStatus> deleteBook(@PathVariable("bookId") UUID bookId) {
         bookService.delete(bookId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{bookId}/add")
+    public ResponseEntity<HttpStatus> addBookToFavorites(HttpServletRequest request, @PathVariable("bookId") UUID bookId) {
+        UUID userId = (UUID) request.getAttribute("id");
+        users_booksService.create(userId, bookId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
