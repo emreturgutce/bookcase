@@ -32,7 +32,7 @@ public class AuthFilter extends GenericFilterBean {
                     Claims claims = Jwts.parser().setSigningKey(Constants.API_SECRET_KEY)
                             .parseClaimsJws(token).getBody();
 
-                    httpRequest.setAttribute("userId", Integer.parseInt(claims.get("userId").toString()));
+                    httpRequest.setAttribute("id", claims.get("id").toString());
                 } catch (Exception e) {
                     httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "invalid/expired token");
 
