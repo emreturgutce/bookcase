@@ -2,6 +2,7 @@ package com.emreturgutce.bookcase.controller;
 
 import com.emreturgutce.bookcase.model.Book;
 import com.emreturgutce.bookcase.service.BookService;
+import com.emreturgutce.bookcase.service.Users_BooksService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,11 @@ import java.util.UUID;
 @RequestMapping("/api/books")
 public class BookController {
     final BookService bookService;
+    final Users_BooksService users_booksService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, Users_BooksService users_booksService) {
         this.bookService = bookService;
+        this.users_booksService = users_booksService;
     }
 
     @PostMapping("")
