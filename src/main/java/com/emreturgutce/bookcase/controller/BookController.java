@@ -80,7 +80,7 @@ public class BookController {
 
     @GetMapping("/{bookId}/add")
     public ResponseEntity<HttpStatus> addBookToFavorites(HttpServletRequest request, @PathVariable("bookId") UUID bookId) {
-        UUID userId = (UUID) request.getAttribute("id");
+        UUID userId = UUID.fromString(request.getAttribute("id").toString());
         users_booksService.create(userId, bookId);
 
         return new ResponseEntity<>(HttpStatus.OK);
