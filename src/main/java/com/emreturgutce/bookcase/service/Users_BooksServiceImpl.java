@@ -1,5 +1,6 @@
 package com.emreturgutce.bookcase.service;
 
+import com.emreturgutce.bookcase.exception.BadRequestException;
 import com.emreturgutce.bookcase.repository.Users_BooksRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,11 @@ public class Users_BooksServiceImpl implements Users_BooksService {
     }
 
     @Override
-    public void create(UUID user_id, UUID book_id) {
-        users_booksRepository.create(user_id, book_id);
+    public void create(UUID user_id, UUID book_id) throws BadRequestException {
+        try {
+            users_booksRepository.create(user_id, book_id);
+        } catch (Exception e) {
+            throw new BadRequestException("Relation already exists");
+        }
     }
 }
