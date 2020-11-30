@@ -1,6 +1,7 @@
 package com.emreturgutce.bookcase.service;
 
 import com.emreturgutce.bookcase.exception.BadRequestException;
+import com.emreturgutce.bookcase.exception.NotFoundException;
 import com.emreturgutce.bookcase.model.Book;
 import com.emreturgutce.bookcase.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(UUID id) {
-        return bookRepository.findById(id);
+    public Book findById(UUID id) throws NotFoundException {
+        try {
+            return bookRepository.findById(id);
+        } catch (Exception e) {
+            throw new NotFoundException("Book not found with the given id");
+        }
+
     }
 
     @Override
