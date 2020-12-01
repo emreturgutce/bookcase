@@ -49,7 +49,7 @@ public class UserController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    private String generateJwtToken(User user) {
+    private static String generateJwtToken(User user) {
         long timestamp = System.currentTimeMillis();
 
         return Jwts.builder()
