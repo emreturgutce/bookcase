@@ -15,6 +15,6 @@ public interface BookService {
     List<Book> findAll();
 
     Book update(UUID id, Book book) throws BadRequestException;
-//
-//    void delete(UUID id) throws NotFoundException;
+
+    void delete(UUID id) throws NotFoundException;
 }
