@@ -13,8 +13,8 @@ public interface BookService {
     Book findById(UUID id) throws NotFoundException;
 
     List<Book> findAll();
-//
-//    void update(UUID id, Book book) throws BadRequestException;
+
+    Book update(UUID id, Book book) throws BadRequestException;
 //
 //    void delete(UUID id) throws NotFoundException;
 }
