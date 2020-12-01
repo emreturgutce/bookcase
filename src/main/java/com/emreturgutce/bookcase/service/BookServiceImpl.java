@@ -55,7 +55,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book update(UUID id, Book bookParam) throws BadRequestException {
         try {
-            Book book = bookRepository.findById(id).get();
+            Book book = bookRepository.getOne(id);
 
             book.setName(bookParam.getName());
 
