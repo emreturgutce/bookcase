@@ -3,19 +3,16 @@ package com.emreturgutce.bookcase.service;
 import com.emreturgutce.bookcase.exception.BadRequestException;
 import com.emreturgutce.bookcase.model.User;
 import com.emreturgutce.bookcase.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    final
-    UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     @Override
     public User signup(String name, String email, String password) throws BadRequestException {

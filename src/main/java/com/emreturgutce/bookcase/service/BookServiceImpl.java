@@ -17,8 +17,8 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-    final BookRepository bookRepository;
-    final UserRepository userRepository;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Book create(String name, UUID author_id) throws BadRequestException{
