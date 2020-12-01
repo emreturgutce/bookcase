@@ -50,13 +50,15 @@ public class BookController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-//    @PutMapping("/{bookId}")
-//    public ResponseEntity<HttpStatus> updateBook(@PathVariable("bookId") UUID bookId, @RequestBody Book book) {
-//        bookService.update(bookId, book);
-//
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
+    @PutMapping("/{bookId}")
+    public ResponseEntity<Map<String, String>> updateBook(@PathVariable("bookId") UUID bookId, @RequestBody Book bookParam) {
+        Book book = bookService.update(bookId, bookParam);
+
+        Map<String, String> map = generateBookResponse(book);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
 //    @DeleteMapping("/{bookId}")
 //    public ResponseEntity<HttpStatus> deleteBook(@PathVariable("bookId") UUID bookId) {
 //        bookService.delete(bookId);
