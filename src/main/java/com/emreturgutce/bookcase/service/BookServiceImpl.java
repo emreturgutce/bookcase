@@ -67,12 +67,12 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-//    @Override
-//    public void delete(UUID id) throws NotFoundException {
-//        try {
-//            bookRepository.delete(id);
-//        } catch (Exception e) {
-//            throw new NotFoundException("Book not found");
-//        }
-//    }
+    @Override
+    public void delete(UUID id) throws NotFoundException {
+        try {
+            bookRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new NotFoundException("Book not found");
+        }
+    }
 }
