@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,31 +25,27 @@ public class BookController {
 
         Book book = bookService.create(name, author_id);
 
-        Map<String, String> map = new HashMap<>();
-
-        map.put("name", book.getName());
+        Map<String, String> map = generateBookResponse(book);
 
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
-//
-//    @GetMapping("")
-//    public ResponseEntity<Map<String, List<Book>>> findAllBooks()  {
-//        List<Book> books = bookService.findAll();
-//
-//        Map<String, List<Book>> map = new HashMap<>();
-//
-//        map.put("books", books);
-//
-//        return new ResponseEntity<>(map, HttpStatus.OK);
-//    }
+
+    @GetMapping
+    public ResponseEntity<Map<String, String>> findAllBooks()  {
+        List<Book> books = bookService.findAll();
+
+        Map<String, String> map = new HashMap<>();
+
+        map.put("books", books.toString());
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 
     @GetMapping("/{bookId}")
     public ResponseEntity<Map<String, String>> findBookById(@PathVariable("bookId") UUID bookId) {
         Book book = bookService.findById(bookId);
 
-        Map<String, String> map = new HashMap<>();
-
-        map.put("name", book.getName());
+        Map<String, String> map = generateBookResponse(book);
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
@@ -76,4 +71,15 @@ public class BookController {
 //
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
+
+    private Map<String, String> generateBookResponse(Book book) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("id", book.getId().toString());
+        map.put("name", book.getName());
+        map.put("created_at", book.getCreated_at().toString());
+        map.put("updated_at", book.getUpdated_at().toString());
+
+        return map;
+    }
 }
