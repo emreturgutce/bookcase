@@ -59,12 +59,16 @@ public class BookController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-//    @DeleteMapping("/{bookId}")
-//    public ResponseEntity<HttpStatus> deleteBook(@PathVariable("bookId") UUID bookId) {
-//        bookService.delete(bookId);
-//
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<Map<String, String>> deleteBook(@PathVariable("bookId") UUID bookId) {
+        bookService.delete(bookId);
+
+        Map<String, String> map = new HashMap<>();
+
+        map.put("message", "Book deleted successfully with the given id");
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 //
 //    @GetMapping("/{bookId}/add")
 //    public ResponseEntity<HttpStatus> addBookToFavorites(HttpServletRequest request, @PathVariable("bookId") UUID bookId) {
