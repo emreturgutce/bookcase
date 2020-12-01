@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,14 +70,22 @@ public class BookController {
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
-//
-//    @GetMapping("/{bookId}/add")
-//    public ResponseEntity<HttpStatus> addBookToFavorites(HttpServletRequest request, @PathVariable("bookId") UUID bookId) {
-//        UUID userId = UUID.fromString(request.getAttribute("id").toString());
-//        users_booksService.create(userId, bookId);
-//
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+
+    @GetMapping("/{bookId}/add")
+    public ResponseEntity<Map<String, String>> addBookToFavorite(HttpServletRequest request,
+                                                                 @PathVariable("bookId") UUID bookId) {
+        var id = request.getAttribute("id");
+
+        UUID userId = UUID.fromString(id.toString());
+
+        bookService.addToFavorite(bookId, userId);
+
+        Map<String, String> map = new HashMap<>();
+
+        map.put("message", "Book add to favorites");
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 
     private Map<String, String> generateBookResponse(Book book) {
         Map<String, String> map = new HashMap<>();
