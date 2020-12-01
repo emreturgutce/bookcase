@@ -1,70 +1,25 @@
 package com.emreturgutce.bookcase.repository;
 
 import com.emreturgutce.bookcase.model.User;
-import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Repository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.util.List;
-import java.util.UUID;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
-@Repository
-public class UserRepositoryImpl implements UserRepository {
-    private static final String CREATE_USER = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-    private static final String FIND_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
-    private static final String FIND_ALL_USERS = "SELECT * FROM users";
-    private static final String FIND_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
+@Component
+@RequiredArgsConstructor
+public class UserRepositoryImpl {
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    final
-    JdbcTemplate jdbcTemplate;
+    private final UserRepository userRepository;
 
-    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public User findByEmail(String email) {
+        String FIND_BY_EMAIL = "SELECT u from User u WHERE u.email = :email";
+        TypedQuery<User> query = entityManager.createQuery(FIND_BY_EMAIL, User.class);
+        query.setParameter("email", email);
+        return query.getSingleResult();
     }
-
-    @Override
-    public UUID create(String name, String email, String password){
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(10));
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(CREATE_USER, Statement.RETURN_GENERATED_KEYS);
-
-            ps.setString(1, name);
-            ps.setString(2, email);
-            ps.setString(3, hashedPassword);
-
-            return ps;
-        }, keyHolder);
-
-        return (UUID) keyHolder.getKeys().get("id");
-    }
-
-    @Override
-    public User findById(UUID id)  {
-        return jdbcTemplate.queryForObject(FIND_USER_BY_ID, new Object[]{ id }, userRowMapper);
-    }
-
-    @Override
-    public User findByEmail(String email){
-        return jdbcTemplate.queryForObject(FIND_USER_BY_EMAIL, new Object[] { email }, userRowMapper);
-    }
-
-    @Override
-    public List<User> findAll() {
-        return jdbcTemplate.query(FIND_ALL_USERS, userRowMapper);
-    }
-
-
-    private final RowMapper<User> userRowMapper = ((rs, rowNum) -> new User(rs.getString("id"),
-            rs.getString("name"),
-            rs.getString("email"),
-            rs.getString("password"),
-            rs.getString("created_at"),
-            rs.getString("updated_at")));
 }

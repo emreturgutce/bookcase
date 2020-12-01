@@ -3,7 +3,10 @@ package com.emreturgutce.bookcase.service;
 import com.emreturgutce.bookcase.exception.BadRequestException;
 import com.emreturgutce.bookcase.exception.NotFoundException;
 import com.emreturgutce.bookcase.model.Book;
+import com.emreturgutce.bookcase.model.User;
 import com.emreturgutce.bookcase.repository.BookRepository;
+import com.emreturgutce.bookcase.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,17 +15,23 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-    final BookRepository bookRepository;
-
-    public BookServiceImpl(BookRepository bookRepository) { this.bookRepository = bookRepository; }
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public Book create(String name, String author_id) throws BadRequestException{
+    public Book create(String name, UUID author_id) throws BadRequestException{
         try {
-            UUID bookId = bookRepository.create(name, author_id);
+            User author = userRepository.getOne(author_id);
 
-            return bookRepository.findById(bookId);
+            Book book = new Book();
+            book.setName(name);
+            book.setAuthor(author);
+
+            bookRepository.save(book);
+
+            return book;
         } catch (Exception e) {
             throw new BadRequestException("Invalid request");
         }
@@ -31,7 +40,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book findById(UUID id) throws NotFoundException {
         try {
-            return bookRepository.findById(id);
+            return bookRepository.findById(id).get();
         } catch (Exception e) {
             throw new NotFoundException("Book not found with the given id");
         }
@@ -44,9 +53,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void update(UUID id, Book book) throws BadRequestException {
+    public Book update(UUID id, Book bookParam) throws BadRequestException {
         try {
-            bookRepository.update(id, book.getName(), UUID.fromString(book.getAuthor_id()));
+            Book book = bookRepository.getOne(id);
+
+            book.setName(bookParam.getName());
+
+            bookRepository.save(book);
+
+            return book;
         } catch (Exception e) {
             throw new BadRequestException("invalid request");
         }
@@ -55,9 +70,27 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(UUID id) throws NotFoundException {
         try {
-            bookRepository.delete(id);
+            bookRepository.deleteById(id);
         } catch (Exception e) {
             throw new NotFoundException("Book not found");
+        }
+    }
+
+    @Override
+    public void addToFavorite(UUID bookId, UUID userId) throws NotFoundException {
+        try {
+            User user = userRepository.getOne(userId);
+            Book book = bookRepository.getOne(bookId);
+
+            List<Book> books = user.getBooks();
+
+            books.add(book);
+
+            user.setBooks(books);
+
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new NotFoundException("Not found");
         }
     }
 }

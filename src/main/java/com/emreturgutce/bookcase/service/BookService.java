@@ -8,13 +8,15 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BookService {
-    Book create(String name, String author_id) throws BadRequestException;
+    Book create(String name, UUID author_id) throws BadRequestException;
 
     Book findById(UUID id) throws NotFoundException;
 
     List<Book> findAll();
 
-    void update(UUID id, Book book) throws BadRequestException;
+    Book update(UUID id, Book book) throws BadRequestException;
 
     void delete(UUID id) throws NotFoundException;
+
+    void addToFavorite(UUID bookId, UUID userId) throws NotFoundException;
 }
