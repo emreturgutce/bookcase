@@ -75,4 +75,22 @@ public class BookServiceImpl implements BookService {
             throw new NotFoundException("Book not found");
         }
     }
+
+    @Override
+    public void addToFavorite(UUID bookId, UUID userId) throws NotFoundException {
+        try {
+            User user = userRepository.getOne(userId);
+            Book book = bookRepository.getOne(bookId);
+
+            List<Book> books = user.getBooks();
+
+            books.add(book);
+
+            user.setBooks(books);
+
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new NotFoundException("Not found");
+        }
+    }
 }
