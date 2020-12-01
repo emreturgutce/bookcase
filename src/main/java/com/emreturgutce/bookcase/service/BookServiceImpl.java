@@ -52,15 +52,21 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll();
     }
 
-//    @Override
-//    public void update(UUID id, Book book) throws BadRequestException {
-//        try {
-//            bookRepository.update(id, book.getName(), UUID.fromString(book.getAuthor_id()));
-//        } catch (Exception e) {
-//            throw new BadRequestException("invalid request");
-//        }
-//    }
-//
+    @Override
+    public Book update(UUID id, Book bookParam) throws BadRequestException {
+        try {
+            Book book = bookRepository.findById(id).get();
+
+            book.setName(bookParam.getName());
+
+            bookRepository.save(book);
+
+            return book;
+        } catch (Exception e) {
+            throw new BadRequestException("invalid request");
+        }
+    }
+
 //    @Override
 //    public void delete(UUID id) throws NotFoundException {
 //        try {
