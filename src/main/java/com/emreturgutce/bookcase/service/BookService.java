@@ -17,4 +17,6 @@ public interface BookService {
     Book update(UUID id, Book book) throws BadRequestException;
 
     void delete(UUID id) throws NotFoundException;
+
+    void addToFavorite(UUID bookId, UUID userId) throws NotFoundException;
 }
