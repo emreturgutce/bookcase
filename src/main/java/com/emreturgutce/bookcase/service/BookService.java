@@ -11,8 +11,8 @@ public interface BookService {
     Book create(String name, UUID author_id) throws BadRequestException;
 
     Book findById(UUID id) throws NotFoundException;
-//
-//    List<Book> findAll();
+
+    List<Book> findAll();
 //
 //    void update(UUID id, Book book) throws BadRequestException;
 //
