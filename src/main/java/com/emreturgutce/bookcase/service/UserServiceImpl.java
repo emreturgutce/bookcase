@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
             return user;
         } catch (Exception e) {
-            throw new BadRequestException("invalid credentials");
+            throw new BadRequestException("Bad Request");
         }
     }
 
