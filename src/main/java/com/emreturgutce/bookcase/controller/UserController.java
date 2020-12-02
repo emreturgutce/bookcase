@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +23,7 @@ public class UserController {
     final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> createUser(@RequestBody Map<String, Object> userMap) {
+    public ResponseEntity<Map<String, String>> createUser(HttpServletResponse response, @RequestBody Map<String, Object> userMap) {
         String name = (String) userMap.get("name");
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
@@ -32,11 +34,16 @@ public class UserController {
 
         Map<String, String> map = generateUserResponseWithToken(user, token);
 
+        Cookie cookie = new Cookie("session_token", token);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
+
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, Object> userMap) {
+    public ResponseEntity<Map<String, String>> login(HttpServletResponse response, @RequestBody Map<String, Object> userMap) {
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
 
@@ -45,6 +52,11 @@ public class UserController {
         String token = generateJwtToken(user);
 
         Map<String, String> map = generateUserResponseWithToken(user, token);
+
+        Cookie cookie = new Cookie("session_token", token);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
