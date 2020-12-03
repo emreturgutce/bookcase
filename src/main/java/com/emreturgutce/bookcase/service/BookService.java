@@ -13,7 +13,7 @@ public interface BookService {
 
     Book findById(UUID id) throws NotFoundException;
 
-    List<Book> findAll();
+    CompletableFuture<List<Book>> findAll();
 
     Book update(UUID id, Book book) throws BadRequestException;
 

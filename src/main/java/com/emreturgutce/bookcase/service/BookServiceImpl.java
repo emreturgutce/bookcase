@@ -51,8 +51,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    @Async
+    public CompletableFuture<List<Book>> findAll() {
+        return CompletableFuture.completedFuture(bookRepository.findAll());
     }
 
     @Override
