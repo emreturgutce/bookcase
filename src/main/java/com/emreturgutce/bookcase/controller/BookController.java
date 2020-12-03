@@ -45,7 +45,7 @@ public class BookController {
 
     @GetMapping("/{bookId}")
     public ResponseEntity<Map<String, String>> findBookById(@PathVariable("bookId") UUID bookId) {
-        Book book = bookService.findById(bookId);
+        Book book = bookService.findById(bookId).join();
 
         Map<String, String> map = generateBookResponse(book);
 
