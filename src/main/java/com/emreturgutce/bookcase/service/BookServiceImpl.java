@@ -7,11 +7,13 @@ import com.emreturgutce.bookcase.model.User;
 import com.emreturgutce.bookcase.repository.BookRepository;
 import com.emreturgutce.bookcase.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Transactional
@@ -21,7 +23,8 @@ public class BookServiceImpl implements BookService {
     private final UserRepository userRepository;
 
     @Override
-    public Book create(String name, UUID author_id) throws BadRequestException{
+    @Async
+    public CompletableFuture<Book> create(String name, UUID author_id) throws BadRequestException{
         try {
             User author = userRepository.getOne(author_id);
 
@@ -31,7 +34,7 @@ public class BookServiceImpl implements BookService {
 
             bookRepository.save(book);
 
-            return book;
+            return CompletableFuture.completedFuture(book);
         } catch (Exception e) {
             throw new BadRequestException("Invalid request");
         }
@@ -40,7 +43,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book findById(UUID id) throws NotFoundException {
         try {
-            return bookRepository.findById(id).get();
+            return bookRepository.findById(id).orElseThrow();
         } catch (Exception e) {
             throw new NotFoundException("Book not found with the given id");
         }
