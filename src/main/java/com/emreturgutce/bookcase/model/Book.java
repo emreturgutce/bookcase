@@ -9,12 +9,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "books")
-@RequiredArgsConstructor
-@Getter
-@Setter
-@ToString
 public class Book {
     @Id
     @GeneratedValue(generator = "UUID")

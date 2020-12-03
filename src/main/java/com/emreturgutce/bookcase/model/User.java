@@ -10,12 +10,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
 public class User {
     @Id
     @GeneratedValue(generator = "UUID")
