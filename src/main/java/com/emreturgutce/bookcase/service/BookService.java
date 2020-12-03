@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 public interface BookService {
     CompletableFuture<Book> create(String name, UUID author_id) throws BadRequestException;
 
-    Book findById(UUID id) throws NotFoundException;
+    CompletableFuture<Book> findById(UUID id) throws NotFoundException;
 
     CompletableFuture<List<Book>> findAll();
 

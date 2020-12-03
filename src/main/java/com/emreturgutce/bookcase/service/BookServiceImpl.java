@@ -41,13 +41,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(UUID id) throws NotFoundException {
+    @Async
+    public CompletableFuture<Book> findById(UUID id) throws NotFoundException {
         try {
-            return bookRepository.findById(id).orElseThrow();
+            return CompletableFuture.completedFuture(bookRepository.findById(id).orElseThrow());
         } catch (Exception e) {
             throw new NotFoundException("Book not found with the given id");
         }
-
     }
 
     @Override
