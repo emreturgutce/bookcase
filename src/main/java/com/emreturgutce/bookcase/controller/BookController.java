@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/books")
@@ -24,9 +25,9 @@ public class BookController {
         String name = (String) bookMap.get("name");
         UUID author_id = UUID.fromString(bookMap.get("author_id").toString());
 
-        Book book = bookService.create(name, author_id);
+        CompletableFuture<Book> book = bookService.create(name, author_id);
 
-        Map<String, String> map = generateBookResponse(book);
+        Map<String, String> map = generateBookResponse(book.join());
 
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
@@ -37,7 +38,7 @@ public class BookController {
 
         Map<String, String> map = new HashMap<>();
 
-        map.put("books", books.toString());
+        map.put("books", "books fetched");
 
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
