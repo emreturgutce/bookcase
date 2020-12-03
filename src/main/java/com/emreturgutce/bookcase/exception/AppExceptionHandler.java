@@ -17,7 +17,7 @@ public class AppExceptionHandler {
         Map<String, String> map = new HashMap<>();
 
         map.put("message", exception.getMessage());
-        map.put("code", "400 Bad Request");
+        map.put("code", "404 Not Found");
 
         return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
     }
