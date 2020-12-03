@@ -6,9 +6,10 @@ import com.emreturgutce.bookcase.model.Book;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public interface BookService {
-    Book create(String name, UUID author_id) throws BadRequestException;
+    CompletableFuture<Book> create(String name, UUID author_id) throws BadRequestException;
 
     Book findById(UUID id) throws NotFoundException;
 
