@@ -34,7 +34,7 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<Map<String, String>> findAllBooks()  {
-        List<Book> books = bookService.findAll();
+        List<Book> books = bookService.findAll().join();
 
         Map<String, String> map = new HashMap<>();
 
