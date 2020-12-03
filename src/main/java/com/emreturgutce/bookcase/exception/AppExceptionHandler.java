@@ -1,5 +1,6 @@
 package com.emreturgutce.bookcase.exception;
 
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -29,5 +30,15 @@ public class AppExceptionHandler {
         map.put("code", "400 Bad Request");
 
         return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({ Exception.class })
+    protected ResponseEntity<Map<String, String>> unexpected(RuntimeException exception) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("message", exception.getMessage());
+        map.put("code", "500 Internal Server Error");
+
+        return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
