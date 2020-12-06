@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,6 +23,7 @@ public class Book {
     private UUID id;
 
     @Column(unique = true, nullable = false)
+    @Size(min =  2, message = "Name field must be more than 2 characters")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
