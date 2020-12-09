@@ -11,4 +11,9 @@ public class IndexController {
         model.addAttribute("name", "Emre");
         return "index";
     }
+
+    @GetMapping("/create-book")
+    public String createBook(Model model) {
+        return "create";
+    }
 }
