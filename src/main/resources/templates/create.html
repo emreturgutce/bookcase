@@ -19,8 +19,11 @@
                 </ul>
             </div>
         </nav>
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            This is a success alert—check it out!
+        </div>
         <div class="container">
-            <form>
+            <form id="book-create-form">
                 <h1>Book Create Page</h1>
                 <div class="form-group">
                     <span>Book Name</span>
@@ -37,5 +40,6 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
+        <script th:src="/js/script.js" ></script>
     </body>
 </html>
